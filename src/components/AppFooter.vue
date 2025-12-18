@@ -6,9 +6,9 @@
           <el-icon size="18" class="brand-icon">
             <Picture />
           </el-icon>
-          艺术画廊
+          苗畅的画廊
         </span>
-        <span class="copyright">© {{ year }} 艺术画廊 · 保留所有权利</span>
+        <span class="copyright">© {{ year }} 苗畅的画廊 · 保留所有权利</span>
       </div>
       <div class="footer-right">
         <router-link to="/about" class="link">关于</router-link>

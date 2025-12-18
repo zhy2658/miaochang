@@ -3,7 +3,7 @@
     <div class="container">
       <!-- 页面标题 -->
       <div class="page-header">
-        <h1 class="page-title">艺术画廊</h1>
+        <h1 class="page-title">苗畅的画廊</h1>
         <p class="page-subtitle">探索精美的艺术作品收藏</p>
       </div>
 

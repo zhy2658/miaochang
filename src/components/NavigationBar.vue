@@ -5,7 +5,7 @@
         <el-icon size="24" class="logo-icon">
           <Picture />
         </el-icon>
-        <span class="logo-text">艺术画廊</span>
+        <span class="logo-text">苗畅的画廊</span>
       </router-link>
       
       <!-- 移动端汉堡菜单 -->

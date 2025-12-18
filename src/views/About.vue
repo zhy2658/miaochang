@@ -14,7 +14,7 @@
             <div class="intro-text">
               <h2 class="intro-title">我们的使命</h2>
               <p class="intro-description">
-                艺术画廊致力于成为连接艺术家与艺术爱好者的桥梁。我们相信艺术具有改变世界的力量，
+                画廊致力于成为连接艺术家与艺术爱好者的桥梁。我们相信艺术具有改变世界的力量，
                 能够为人们带来美的享受、思想的启发和情感的共鸣。通过我们的平台，
                 我们希望让更多人接触到优秀的艺术作品，感受艺术的魅力。
               </p>
@@ -44,7 +44,7 @@
             </div>
             <div class="intro-visual">
               <div class="visual-card">
-                <img src="https://picsum.photos/400/300?random=100" alt="艺术画廊" />
+                <img src="https://picsum.photos/400/300?random=100" alt="苗畅的画廊" />
                 <div class="visual-overlay">
                   <span class="overlay-text">艺术无界，创意无限</span>
                 </div>
