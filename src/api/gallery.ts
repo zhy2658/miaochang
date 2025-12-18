@@ -20,9 +20,23 @@ export interface ApiResponse<T> {
   totalPages: number
 }
 
-export const fetchPics = (page: number, limit: number) => {
-  return request.get<any, ApiResponse<ApiPicItem[]>>('/api/pic', {
+export const fetchPics = async (page: number, limit: number) => {
+  const res = await request.get<any, any>('/api/pic', {
     params: { page, limit }
   })
+
+  // Handle array response from https://api.1mcc.top
+  if (Array.isArray(res)) {
+    return {
+      ok: true,
+      data: res,
+      total: res.length,
+      page: 1,
+      limit: res.length,
+      totalPages: 1
+    } as ApiResponse<ApiPicItem[]>
+  }
+
+  return res as ApiResponse<ApiPicItem[]>
 }
 

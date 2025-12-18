@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: 'http://localhost:8787',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://api.1mcc.top',
   timeout: 10000,
   headers: {
     Accept: 'application/json'
