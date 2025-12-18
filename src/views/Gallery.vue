@@ -22,7 +22,7 @@
             </template>
           </el-input>
         </div>
-        
+
         <div class="filter-controls">
           <el-select v-model="selectedCategory" placeholder="选择分类" clearable>
             <el-option
@@ -32,14 +32,14 @@
               :value="category"
             />
           </el-select>
-          
+
           <el-select v-model="sortBy" placeholder="排序方式">
             <el-option label="最新发布" value="newest" />
             <el-option label="最旧发布" value="oldest" />
             <el-option label="标题A-Z" value="title-asc" />
             <el-option label="标题Z-A" value="title-desc" />
           </el-select>
-          
+
           <el-radio-group v-model="viewMode" size="small">
             <el-radio-button label="grid">
               <el-icon><Grid /></el-icon>
@@ -57,13 +57,13 @@
           <el-icon class="loading-icon"><Loading /></el-icon>
           <p>正在加载作品...</p>
         </div>
-        
+
         <div v-else-if="filteredImages.length === 0" class="empty-state">
           <el-icon size="64" class="empty-icon"><Picture /></el-icon>
           <h3>暂无作品</h3>
           <p>没有找到符合条件的艺术作品</p>
         </div>
-        
+
         <GalleryGrid v-else :images="filteredImages" />
       </div>
 
@@ -86,6 +86,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { Search, Grid, List, Loading, Picture } from '@element-plus/icons-vue'
 import GalleryGrid from '@/components/GalleryGrid.vue'
+import { fetchPics, type ApiPicItem } from '@/api/gallery'
 
 interface GalleryImage {
   id: number
@@ -98,7 +99,6 @@ interface GalleryImage {
   featured: boolean
 }
 
-// 模拟数据
 const allImages = ref<GalleryImage[]>([])
 const loading = ref(false)
 
@@ -108,7 +108,6 @@ const selectedCategory = ref('')
 const sortBy = ref('newest')
 const viewMode = ref('grid')
 
-// 分页
 const currentPage = ref(1)
 const pageSize = ref(12)
 const totalImages = ref(0)
@@ -124,7 +123,7 @@ const filteredImages = computed(() => {
   // 搜索筛选
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    images = images.filter(img => 
+    images = images.filter(img =>
       img.title.toLowerCase().includes(query) ||
       img.description.toLowerCase().includes(query) ||
       img.artist.toLowerCase().includes(query)
@@ -152,12 +151,7 @@ const filteredImages = computed(() => {
     }
   })
 
-  totalImages.value = images.length
-
-  // 分页
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
-  return images.slice(start, end)
+  return images
 })
 
 const totalPages = computed(() => Math.ceil(totalImages.value / pageSize.value))
@@ -165,39 +159,36 @@ const totalPages = computed(() => Math.ceil(totalImages.value / pageSize.value))
 const handlePageChange = (page: number) => {
   currentPage.value = page
   window.scrollTo({ top: 0, behavior: 'smooth' })
+  fetchImages()
 }
 
-// 生成模拟数据
-const generateMockImages = () => {
-  const mockImages: GalleryImage[] = []
-  const categories = ['山水画', '人物画', '花鸟画', '抽象艺术', '城市摄影', '自然风光', '静物画', '现代艺术'] as const
-  const artists = ['张艺师', '李明', '王创意', '陈画家', '刘艺术', '赵大师', '孙画师', '周艺术家'] as const
-  const pick = <T>(arr: readonly T[]) => arr[Math.floor(Math.random() * arr.length)]!
-  
-  for (let i = 1; i <= 48; i++) {
-    mockImages.push({
-      id: i,
-      title: `艺术作品 ${i}`,
-      description: `这是一件精美的艺术作品，展现了独特的艺术风格和创作理念。作品融合了传统与现代的元素，呈现出独特的视觉效果。`,
-      url: `https://picsum.photos/400/400?random=${i + 10}`,
-      category: pick(categories),
-      artist: pick(artists),
-      createdAt: new Date(2024 - Math.floor(Math.random() * 2), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1)
-        .toISOString()
-        .slice(0, 10),
-      featured: i <= 8
-    })
+const fetchImages = async () => {
+  loading.value = true
+  try {
+    const res = await fetchPics(currentPage.value, pageSize.value)
+    const items = res.data as ApiPicItem[]
+    allImages.value = items.map((item) => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      url: item.url.trim(),
+      category: item.category,
+      artist: item.artist,
+      createdAt: item.createdAt,
+      featured: false
+    }))
+    totalImages.value = res.total
+    pageSize.value = res.limit
+    currentPage.value = res.page
+  } catch {
+    allImages.value = []
+  } finally {
+    loading.value = false
   }
-  
-  return mockImages
 }
 
 onMounted(() => {
-  loading.value = true
-  setTimeout(() => {
-    allImages.value = generateMockImages()
-    loading.value = false
-  }, 1000)
+  fetchImages()
 })
 </script>
 
@@ -325,28 +316,28 @@ onMounted(() => {
   .container {
     padding: 0 1rem;
   }
-  
+
   .page-header {
     padding: 2rem 0;
   }
-  
+
   .page-title {
     font-size: 2rem;
   }
-  
+
   .page-subtitle {
     font-size: 1.1rem;
   }
-  
+
   .filter-section {
     padding: 1.5rem;
   }
-  
+
   .filter-controls {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .filter-controls > * {
     width: 100%;
   }
@@ -356,7 +347,7 @@ onMounted(() => {
   .page-title {
     font-size: 1.75rem;
   }
-  
+
   .filter-section {
     padding: 1rem;
   }
