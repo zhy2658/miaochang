@@ -170,8 +170,9 @@ const handlePageChange = (page: number) => {
 // 生成模拟数据
 const generateMockImages = () => {
   const mockImages: GalleryImage[] = []
-  const categories = ['山水画', '人物画', '花鸟画', '抽象艺术', '城市摄影', '自然风光', '静物画', '现代艺术']
-  const artists = ['张艺师', '李明', '王创意', '陈画家', '刘艺术', '赵大师', '孙画师', '周艺术家']
+  const categories = ['山水画', '人物画', '花鸟画', '抽象艺术', '城市摄影', '自然风光', '静物画', '现代艺术'] as const
+  const artists = ['张艺师', '李明', '王创意', '陈画家', '刘艺术', '赵大师', '孙画师', '周艺术家'] as const
+  const pick = <T>(arr: readonly T[]) => arr[Math.floor(Math.random() * arr.length)]!
   
   for (let i = 1; i <= 48; i++) {
     mockImages.push({
@@ -179,9 +180,11 @@ const generateMockImages = () => {
       title: `艺术作品 ${i}`,
       description: `这是一件精美的艺术作品，展现了独特的艺术风格和创作理念。作品融合了传统与现代的元素，呈现出独特的视觉效果。`,
       url: `https://picsum.photos/400/400?random=${i + 10}`,
-      category: categories[Math.floor(Math.random() * categories.length)],
-      artist: artists[Math.floor(Math.random() * artists.length)],
-      createdAt: new Date(2024 - Math.floor(Math.random() * 2), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
+      category: pick(categories),
+      artist: pick(artists),
+      createdAt: new Date(2024 - Math.floor(Math.random() * 2), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1)
+        .toISOString()
+        .slice(0, 10),
       featured: i <= 8
     })
   }
