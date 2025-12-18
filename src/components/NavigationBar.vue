@@ -79,10 +79,11 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #d1d5db;
   transition: all 0.3s ease;
+  color: #111827;
 }
 
 .navbar.scrolled {
@@ -155,7 +156,7 @@ onUnmounted(() => {
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   text-decoration: none;
-  color: inherit;
+  color: #111827;
   font-weight: 500;
   transition: all 0.3s ease;
   position: relative;

@@ -29,13 +29,13 @@ const year = new Date().getFullYear()
 .site-footer {
   width: 100%;
   border-top: 1px solid var(--el-border-color);
-  background: rgba(255, 255, 255, 0.9);
+  background-color: var(--el-bg-color);
   backdrop-filter: blur(8px);
 }
 
 :global(html.dark) .site-footer {
-  background: rgba(17, 24, 39, 0.9);
-  border-top-color: #374151;
+  background-color: var(--el-bg-color);
+  border-top-color: var(--el-border-color);
 }
 
 .footer-inner {

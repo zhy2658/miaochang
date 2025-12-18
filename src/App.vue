@@ -34,6 +34,12 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+:root:not(.dark) {
+  --el-text-color-primary: #111827;
+  --el-text-color-secondary: #4b5563;
+  --el-border-color: #d1d5db;
+}
+
 #app {
   min-height: 100vh;
   display: flex;
